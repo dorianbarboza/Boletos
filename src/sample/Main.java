@@ -13,8 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
+import componentesPersonalizados.BotonPersonalizado;
 
 
 public class Main extends Application {
@@ -80,42 +80,49 @@ public class Main extends Application {
 
         Label txtID = new Label ("ID");
         TextField campoID = new TextField();
-        gp.add(txtID,1,4);
-        gp.add(campoID,1,5);
+        gp.add(txtID,1,1);
+        gp.add(campoID,1,2);
 
         // Nombre
         Label txtNombre = new Label ("Nombre");
         TextField campoNombre = new TextField();
-        gp.add(txtNombre,1,1);
-        gp.add(campoNombre,1,2);
+        gp.add(txtNombre,2,1);
+        gp.add(campoNombre,2,2);
 
         // Apellido
         Label txtApellido = new Label ("Apellido");
         TextField campoApellido = new TextField();
-        gp.add(txtApellido,2,1);
-        gp.add(campoApellido,2,2);
+        gp.add(txtApellido,3,1);
+        gp.add(campoApellido,3,2);
 
         // Direccion
         Label txtDireccion = new Label ("Direccion");
         TextField campoDireccion = new TextField();
-        gp.add(txtDireccion,3,1);
-        gp.add(campoDireccion,3,2);
+        gp.add(txtDireccion,4,1);
+        gp.add(campoDireccion,4,2);
 
         // Insertar
-        Button insert = new Button("Nuevo");
+        BotonPersonalizado insert = new BotonPersonalizado("Nuevo");
         insert.setPrefSize(70,1);
         gp.add(insert,1,3);
 
+
+
         // Eliminar
-        Button delete = new Button("Eliminar");
+        BotonPersonalizado delete = new BotonPersonalizado("Eliminar");
         delete.setPrefSize(70,3);
         gp.add(delete,2,3);
 
         // Buscar
-        Button search = new Button("Buscar");
+        BotonPersonalizado search = new BotonPersonalizado("Buscar");
         search.setPrefSize(70,1);
         gp.add(search,3,3);
-        
+
+        // Actualizar
+        BotonPersonalizado update = new BotonPersonalizado("Actualizar");
+        update.setPrefSize(70,1);
+        gp.add(update,4,3);
+
 
         /*
         * Boton Insertar
@@ -182,6 +189,7 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
+                System.out.println("Boton presionado Buscar");
 
                 DBManager accesoBD = null;
                 try {
@@ -199,6 +207,35 @@ public class Main extends Application {
                 lvList.setItems(items);
                 lvList.setMaxHeight(Control.USE_PREF_SIZE);
                 gp.add(lvList,1,4);
+
+            }
+        });
+
+        update.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Boton presionado Actualizar");
+                int ID = Integer.parseInt(campoID.getText());
+                String nombre = campoNombre.getText().toString();
+                String apellido = campoApellido.getText().toString();
+                String direccion = campoDireccion.getText().toString();
+                System.out.println(ID);
+                System.out.println(nombre);
+                System.out.println(apellido);
+                System.out.println(direccion);
+
+                DBManager accesoBD = null;
+                try {
+                    accesoBD = new DBManager();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
+                Cliente updateCliente = opCliente.getCliente(14);
+                opCliente.updateCliente(ID, nombre, apellido, direccion);
+
 
             }
         });

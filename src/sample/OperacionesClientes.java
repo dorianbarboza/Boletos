@@ -146,4 +146,33 @@ public class OperacionesClientes {
 
         return numRegs;
     }
+
+    /* ACTUAIZAR DATOS */
+    public int updateCliente(int id, String nombre, String apellidos, String direccion){
+
+        /*String query = "update cliente ( nombre, apellidos, direccion) " +
+                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')";*/
+
+        String query = "update cliente ( nombre, apellidos, direccion) " +
+                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "') where clienteID = "+ id;
+
+
+
+        int numRegs = 0;
+        try {
+            Statement stmt = connection.createStatement();
+            numRegs = stmt.executeUpdate(query);
+
+            System.out.println("Registros afectados: " + numRegs);
+
+        }
+        catch (java.sql.SQLException ex){
+            ex.printStackTrace();
+            System.out.println("SQLException:␣" + ex.getMessage());
+            System.out.println("SQLState:␣" + ex.getSQLState());
+            System.out.println("VendorError:␣" + ex.getErrorCode());
+        }
+
+        return numRegs;
+    }
 }
