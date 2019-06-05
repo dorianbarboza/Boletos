@@ -202,7 +202,7 @@ public class Main extends Application {
                 Cliente regCliente = buscarRegistro.getCliente(14);
 
                 ListView<String> lvList = new ListView<String>();
-                ObservableList<String> items = buscarRegistro.GetAllCliente();
+                ObservableList<String> items = buscarRegistro.ViewClientes();
 
                 lvList.setItems(items);
                 lvList.setMaxHeight(Control.USE_PREF_SIZE);

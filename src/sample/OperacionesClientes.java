@@ -17,24 +17,26 @@ public class OperacionesClientes {
 
 
 
-    public ObservableList GetAllCliente(){
+    public ObservableList ViewClientes(){
 
 
-        int clienteId = 0;
-        String nombre = "", apellidos = "", direccion = "";
+        int id = 0;
+        String nombre = "";
+        String apellidos = "";
+        String direccion = "";
 
-        String query = "SELECT clienteid, nombre, apellidos, direccion " +
-                "FROM cliente " ;
+        //String query = "SELECT clienteID, nombre, apellidos, direccion" + "FROM cliente ";
+        String query = "SELECT *" + "FROM cliente ";
 
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             ObservableList<String> items = FXCollections.observableArrayList();
             while (rs.next()) {
-                clienteId = rs.getInt("clienteid");
+                id = rs.getInt("clienteID");
                 nombre = rs.getString("nombre");
                 apellidos = rs.getString("apellidos");
-                String full = nombre + " " + apellidos;
+                String full = "ID "+ id + " "  + nombre + " " + apellidos +"\n_____________";
                 items.add(full);
             }
             return items;
@@ -153,8 +155,8 @@ public class OperacionesClientes {
         /*String query = "update cliente ( nombre, apellidos, direccion) " +
                 "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')";*/
 
-        String query = "update cliente ( nombre, apellidos, direccion) " +
-                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "') where clienteID = "+ id;
+        String query = "update cliente(nombre, apellidos, direccion) " +
+                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')where = clienteID"+id;
 
 
 
