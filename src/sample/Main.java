@@ -1,19 +1,19 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+
 import java.sql.SQLException;
 
 
@@ -115,6 +115,7 @@ public class Main extends Application {
         Button search = new Button("Buscar");
         search.setPrefSize(70,1);
         gp.add(search,3,3);
+        
 
         /*
         * Boton Insertar
@@ -156,12 +157,21 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Boton presionado ELIMINAR");
-                String nombre = campoNombre.getText().toString();
-                String apellido = campoApellido.getText().toString();
-                String direccion = campoDireccion.getText().toString();
-                System.out.println(nombre);
-                System.out.println(apellido);
-                System.out.println(direccion);
+
+                int ID = Integer.parseInt(campoID.getText());
+
+                DBManager accesoBD = null;
+                try {
+                    accesoBD = new DBManager();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
+                Cliente deleteCliente = opCliente.getCliente(14);
+                opCliente.deleteCliente(ID);
+
+
             }
         });
 
@@ -172,13 +182,24 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Boton presionado BUSCAR");
-                String nombre = campoNombre.getText().toString();
-                String apellido = campoApellido.getText().toString();
-                String direccion = campoDireccion.getText().toString();
-                System.out.println(nombre);
-                System.out.println(apellido);
-                System.out.println(direccion);
+
+                DBManager accesoBD = null;
+                try {
+                    accesoBD = new DBManager();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                OperacionesClientes buscarRegistro = new OperacionesClientes(accesoBD.getConnection());
+                Cliente regCliente = buscarRegistro.getCliente(14);
+
+                ListView<String> lvList = new ListView<String>();
+                ObservableList<String> items = buscarRegistro.GetAllCliente();
+
+                lvList.setItems(items);
+                lvList.setMaxHeight(Control.USE_PREF_SIZE);
+                gp.add(lvList,1,4);
+
             }
         });
 

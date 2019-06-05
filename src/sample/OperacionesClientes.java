@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -9,6 +12,45 @@ public class OperacionesClientes {
 
     public OperacionesClientes(Connection conn){
         this.connection = conn;
+    }
+
+
+
+
+    public ObservableList GetAllCliente(){
+
+
+        int clienteId = 0;
+        String nombre = "", apellidos = "", direccion = "";
+
+        String query = "SELECT clienteid, nombre, apellidos, direccion " +
+                "FROM cliente " ;
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            ObservableList<String> items = FXCollections.observableArrayList();
+            while (rs.next()) {
+                clienteId = rs.getInt("clienteid");
+                nombre = rs.getString("nombre");
+                apellidos = rs.getString("apellidos");
+                String full = nombre + " " + apellidos;
+                items.add(full);
+            }
+            return items;
+
+        }
+        catch (java.sql.SQLException ex){
+            ex.printStackTrace();
+            System.out.println("SQLException:␣" + ex.getMessage());
+            System.out.println("SQLState:␣" + ex.getSQLState());
+            System.out.println("VendorError:␣" + ex.getErrorCode());
+
+            return null;
+        }
+
+
+
     }
 
 
