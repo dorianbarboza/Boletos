@@ -2,10 +2,7 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class OperacionesClientes {
     Connection connection;
@@ -21,9 +18,9 @@ public class OperacionesClientes {
 
 
         int id = 0;
-        String nombre = "";
-        String apellidos = "";
-        String direccion = "";
+        String nombre;
+        String apellidos;
+        String direccion;
 
         //String query = "SELECT clienteID, nombre, apellidos, direccion" + "FROM cliente ";
         String query = "SELECT *" + "FROM cliente ";
@@ -36,7 +33,8 @@ public class OperacionesClientes {
                 id = rs.getInt("clienteID");
                 nombre = rs.getString("nombre");
                 apellidos = rs.getString("apellidos");
-                String full = "Tabla Clientes \n"+"ID "+ id + " "  + nombre + " " + apellidos +"\n_____________";
+                direccion = rs.getString("direccion");
+                String full = "ID " + id + " " + nombre + " " + apellidos + " " + direccion + "\n--------";
                 items.add(full);
             }
             return items;
@@ -152,13 +150,9 @@ public class OperacionesClientes {
     /* ACTUAIZAR DATOS */
     public int updateCliente(int id, String nombre, String apellidos, String direccion){
 
-        /*String query = "update cliente ( nombre, apellidos, direccion) " +
-                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')";*/
-
-        String query = "update cliente(nombre, apellidos, direccion) " +
-                "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')where = clienteID"+id;
-
-
+        String query = "UPDATE cliente " + "SET  nombre='" + nombre + "', apellidos='" + apellidos + "', direccion = '" + direccion + "'" +
+                "WHERE clienteID = " + id;
+        
 
         int numRegs = 0;
         try {
@@ -177,6 +171,10 @@ public class OperacionesClientes {
 
         return numRegs;
     }
+
+
+
+
 
 
 }

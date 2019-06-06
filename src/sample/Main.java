@@ -17,9 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import componentesPersonalizados.BotonPersonalizado;
 
@@ -121,26 +118,32 @@ public class Main extends Application {
         gp.add(campoDireccion,4,3);
 
         // Insertar
-        BotonPersonalizado insert = new BotonPersonalizado("Nuevo");
+        //BotonPersonalizado insert = new BotonPersonalizado("Nuevo");
+        Button insert = new Button("Nuevo");
         insert.setPrefSize(70,1);
         gp.add(insert,1,4);
 
 
 
         // Eliminar
-        BotonPersonalizado delete = new BotonPersonalizado("Eliminar");
+        //BotonPersonalizado delete = new BotonPersonalizado("Eliminar");
+        Button delete = new Button("Eliminar");
         delete.setPrefSize(70,4);
         gp.add(delete,2,4);
 
         // Buscar
-        BotonPersonalizado search = new BotonPersonalizado("Buscar");
+        //BotonPersonalizado search = new BotonPersonalizado("Buscar");
+        Button search = new Button("Buscar");
         search.setPrefSize(70,1);
         gp.add(search,3,4);
 
         // Actualizar
-        BotonPersonalizado update = new BotonPersonalizado("Actualizar");
+        //BotonPersonalizado update = new BotonPersonalizado("Actualizar");
+        Button update = new Button("Actualizar");
         update.setPrefSize(70,1);
         gp.add(update,4,4);
+
+
 
 
         /*
@@ -237,11 +240,11 @@ public class Main extends Application {
                 System.out.println("Boton presionado Actualizar");
                 int ID = Integer.parseInt(campoID.getText());
                 String nombre = campoNombre.getText().toString();
-                String apellido = campoApellido.getText().toString();
+                String apellidos = campoApellido.getText().toString();
                 String direccion = campoDireccion.getText().toString();
                 System.out.println(ID);
                 System.out.println(nombre);
-                System.out.println(apellido);
+                System.out.println(apellidos);
                 System.out.println(direccion);
 
                 DBManager accesoBD = null;
@@ -253,7 +256,7 @@ public class Main extends Application {
 
                 OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
                 Cliente updateCliente = opCliente.getCliente(14);
-                opCliente.updateCliente(ID, nombre, apellido, direccion);
+                opCliente.updateCliente(ID, nombre, apellidos, direccion);
 
 
             }
