@@ -172,54 +172,38 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 System.out.println("Boton presionado NUEVO");
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
                 String nombre = campoNombre.getText().toString();
                 String apellido = campoApellido.getText().toString();
                 String direccion = campoDireccion.getText().toString();
                 System.out.println(nombre);
                 System.out.println(apellido);
                 System.out.println(direccion);
-/*
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Aviso");
-                alert.setHeaderText("Insertar");
-*/
-
-
-              //  alert.showAndWait();
-
 
                 DBManager accesoBD = null;
                 try {
                     accesoBD = new DBManager();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Aviso");
-                    alert.setContentText("Dato insertado");
-                    alert.showAndWait();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Aviso");
-                    alert.setContentText("Error");
-                    alert.showAndWait();
                 }
-/*
-                OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
-                Cliente regCliente = opCliente.getCliente(14);
-                opCliente.insertCliente(nombre, apellido, direccion);*/
+
+                alert.setTitle("Aviso: Registrar");
 
                 if (nombre.trim().length() > 0) {
                     OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
                     Cliente regCliente = opCliente.getCliente(14);
                     opCliente.insertCliente(nombre, apellido, direccion);
-                    alert2.setContentText("Opereción Exitosa!");
-                    alert2.showAndWait();
+                    alert.setHeaderText("Exitoso");
+                    alert.setContentText("Registrado");
+                    alert.showAndWait();
                 }
                 else {
-                    System.out.println("No se pudo insertar usuario");
-                    alert2.setContentText("No se realizo la inserción!");
-                    alert2.showAndWait();
+                    alert.setHeaderText("ERROR");
+                    alert.setContentText("No se pudo registrar");
+                    alert.showAndWait();
                 }
 
 
@@ -236,26 +220,32 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 System.out.println("Boton presionado ELIMINAR");
 
-                int ID = Integer.parseInt(campoID.getText());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
                 DBManager accesoBD = null;
                 try {
                     accesoBD = new DBManager();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Aviso");
-                    alert.setContentText("Eliminado");
-                    alert.showAndWait();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Aviso");
-                    alert.setContentText("No eliminado");
-                    alert.showAndWait();
                 }
 
-                OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
-                Cliente deleteCliente = opCliente.getCliente(14);
-                opCliente.deleteCliente(ID);
+                alert.setTitle("Aviso: Eliminar");
+
+                if(campoID.getText().trim().length() > 0) {
+                    int ID = Integer.parseInt(campoID.getText());
+                    OperacionesClientes delete = new OperacionesClientes(accesoBD.getConnection());
+
+                    delete.deleteCliente(ID);
+                    alert.setHeaderText("Exitoso");
+                    alert.setContentText("Registro eliminado");
+                    alert.showAndWait();
+                }
+                else {
+                    alert.setHeaderText("ERROR");
+                    alert.setContentText("No se puedo eliminar");
+                    alert.showAndWait();
+
+                }
 
 
             }
@@ -295,14 +285,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Boton presionado Actualizar");
-                int ID = Integer.parseInt(campoID.getText());
-                String nombre = campoNombre.getText().toString();
-                String apellidos = campoApellido.getText().toString();
-                String direccion = campoDireccion.getText().toString();
-                System.out.println(ID);
-                System.out.println(nombre);
-                System.out.println(apellidos);
-                System.out.println(direccion);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
                 DBManager accesoBD = null;
                 try {
@@ -311,9 +295,27 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
 
-                OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
-                Cliente updateCliente = opCliente.getCliente(14);
-                opCliente.updateCliente(ID, nombre, apellidos, direccion);
+                alert.setTitle("Aviso: Actualizar");
+
+
+                if (campoNombre.getText().trim().length() > 0) {
+                    String nombre = campoNombre.getText().toString();
+                    String apellido = campoApellido.getText().toString();
+                    String direccion = campoDireccion.getText().toString();
+                    int ID = Integer.parseInt(campoID.getText());
+
+                    OperacionesClientes edit = new OperacionesClientes(accesoBD.getConnection());
+                    edit.updateCliente(ID, nombre, apellido, direccion);
+                    alert.setHeaderText("Exitoso");
+                    alert.setContentText("Registro actualizado");
+                    alert.showAndWait();
+                }
+                else {
+                    alert.setHeaderText("ERROR");
+                    alert.setContentText("No se pudo actualizar");
+                    alert.showAndWait();
+
+                }
 
 
             }
