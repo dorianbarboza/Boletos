@@ -1,5 +1,9 @@
 package sample;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.*;
@@ -58,9 +62,12 @@ public class OperacionesClientes {
     * OBTENER DATOS
     */
     public Cliente getCliente(int id){
+        IntegerProperty clienteId = new SimpleIntegerProperty(0);
+        StringProperty nombre =  new SimpleStringProperty(""), apellidos =  new SimpleStringProperty(""), direccion =  new SimpleStringProperty("");
+       /*
         int clienteId = 0;
         String nombre = "", apellidos = "", direccion = "";
-
+*/
         String query = "SELECT clienteid, nombre, apellidos, direccion " +
                 "FROM cliente " +
                 "WHERE clienteID = " + id;
@@ -70,10 +77,10 @@ public class OperacionesClientes {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                clienteId = rs.getInt("clienteid");
-                nombre = rs.getString("nombre");
-                apellidos = rs.getString("apellidos");
-                direccion = rs.getString("direccion");
+                clienteId = new SimpleIntegerProperty( rs.getInt("clienteid"));
+                nombre = new SimpleStringProperty(rs.getString("nombre"));
+                apellidos = new SimpleStringProperty(rs.getString("apellidos"));
+                direccion = new SimpleStringProperty(rs.getString("direccion"));
             }
 
             //System.out.println(clienteId + ", " + nombre + " " + apellidos + ", " + direccion);

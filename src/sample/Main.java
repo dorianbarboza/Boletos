@@ -172,6 +172,7 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 System.out.println("Boton presionado NUEVO");
                 String nombre = campoNombre.getText().toString();
                 String apellido = campoApellido.getText().toString();
@@ -203,10 +204,23 @@ public class Main extends Application {
                     alert.setContentText("Error");
                     alert.showAndWait();
                 }
-
+/*
                 OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
                 Cliente regCliente = opCliente.getCliente(14);
-                opCliente.insertCliente(nombre, apellido, direccion);
+                opCliente.insertCliente(nombre, apellido, direccion);*/
+
+                if (nombre.trim().length() > 0) {
+                    OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
+                    Cliente regCliente = opCliente.getCliente(14);
+                    opCliente.insertCliente(nombre, apellido, direccion);
+                    alert2.setContentText("Opereción Exitosa!");
+                    alert2.showAndWait();
+                }
+                else {
+                    System.out.println("No se pudo insertar usuario");
+                    alert2.setContentText("No se realizo la inserción!");
+                    alert2.showAndWait();
+                }
 
 
             }
