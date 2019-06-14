@@ -4,8 +4,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -16,25 +14,25 @@ public class OperacionesClientes {
         this.connection = conn;
     }
 
-    public ArrayList<Cliente> getClientes() {
+    public ArrayList<Cliente> ViewClientes() {
 
-        String query = "SELECT *" + "FROM cliente ";
+        String query = "SELECT * FROM cliente ";
 
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<Cliente> AListCliente = new ArrayList<>();
+            ArrayList<Cliente> ListaCliente = new ArrayList<>();
             while (rs.next()) {
                 IntegerProperty clienteId = new SimpleIntegerProperty( rs.getInt("clienteid"));
                 StringProperty nombre = new SimpleStringProperty( rs.getString("nombre"));
                 StringProperty apellidos = new SimpleStringProperty( rs.getString("apellidos"));
                 StringProperty direccion = new SimpleStringProperty( rs.getString("direccion"));
-                AListCliente.add(new Cliente(clienteId , nombre, apellidos, direccion));
+                ListaCliente.add(new Cliente(clienteId , nombre, apellidos, direccion));
 
 
             }
-            return AListCliente;
+            return ListaCliente;
         }
         catch (java.sql.SQLException ex){
 
@@ -50,60 +48,16 @@ public class OperacionesClientes {
     }
 
 
-
-
-    public ObservableList ViewClientes(){
-
-
-        int id = 0;
-        String nombre;
-        String apellidos;
-        String direccion;
-
-        //String query = "SELECT clienteID, nombre, apellidos, direccion" + "FROM cliente ";
-        String query = "SELECT *" + "FROM cliente ";
-
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            ObservableList<String> items = FXCollections.observableArrayList();
-            while (rs.next()) {
-                id = rs.getInt("clienteID");
-                nombre = rs.getString("nombre");
-                apellidos = rs.getString("apellidos");
-                direccion = rs.getString("direccion");
-                String full = "ID " + id + " " + nombre + " " + apellidos + " " + direccion + "\n--------";
-                items.add(full);
-            }
-            return items;
-
-        }
-        catch (java.sql.SQLException ex){
-            ex.printStackTrace();
-            System.out.println("SQLException:␣" + ex.getMessage());
-            System.out.println("SQLState:␣" + ex.getSQLState());
-            System.out.println("VendorError:␣" + ex.getErrorCode());
-
-            return null;
-        }
-
-
-
-    }
-
-
     /*
     * OBTENER DATOS
     */
     public Cliente getCliente(int id){
         IntegerProperty clienteId = new SimpleIntegerProperty(0);
         StringProperty nombre =  new SimpleStringProperty(""), apellidos =  new SimpleStringProperty(""), direccion =  new SimpleStringProperty("");
-       /*
-        int clienteId = 0;
-        String nombre = "", apellidos = "", direccion = "";
-*/
+
+
         String query = "SELECT clienteid, nombre, apellidos, direccion " +
-                "FROM cliente " +
+                        "FROM cliente " +
                 "WHERE clienteID = " + id;
 
         try {
@@ -117,7 +71,6 @@ public class OperacionesClientes {
                 direccion = new SimpleStringProperty(rs.getString("direccion"));
             }
 
-            //System.out.println(clienteId + ", " + nombre + " " + apellidos + ", " + direccion);
 
             return new Cliente(clienteId, nombre, apellidos, direccion);
         }
