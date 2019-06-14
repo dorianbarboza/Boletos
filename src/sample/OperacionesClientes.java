@@ -7,12 +7,46 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class OperacionesClientes {
     Connection connection;
 
     public OperacionesClientes(Connection conn){
         this.connection = conn;
+    }
+
+    public ArrayList<Cliente> getClientes() {
+
+        String query = "SELECT *" + "FROM cliente ";
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            ArrayList<Cliente> AListCliente = new ArrayList<>();
+            while (rs.next()) {
+                IntegerProperty clienteId = new SimpleIntegerProperty( rs.getInt("clienteid"));
+                StringProperty nombre = new SimpleStringProperty( rs.getString("nombre"));
+                StringProperty apellidos = new SimpleStringProperty( rs.getString("apellidos"));
+                StringProperty direccion = new SimpleStringProperty( rs.getString("direccion"));
+                AListCliente.add(new Cliente(clienteId , nombre, apellidos, direccion));
+
+
+            }
+            return AListCliente;
+        }
+        catch (java.sql.SQLException ex){
+
+            ex.printStackTrace();
+            System.out.println("SQLException:_"+ ex.getMessage());
+            System.out.println("SQLState:_" + ex.getSQLState());
+            System.out.println("VendorError:_" + ex.getErrorCode());
+
+            return null;
+        }
+
+
     }
 
 

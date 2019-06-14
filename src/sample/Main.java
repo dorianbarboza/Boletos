@@ -1,6 +1,9 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -18,6 +22,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import componentesPersonalizados.BotonPersonalizado;
 
 import static java.awt.Color.BLACK;
@@ -258,7 +264,9 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Boton presionado Buscar");
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                String nombre = campoNombre.getText();
 
                 DBManager accesoBD = null;
                 try {
@@ -267,15 +275,59 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
 
-                OperacionesClientes buscarRegistro = new OperacionesClientes(accesoBD.getConnection());
-                Cliente regCliente = buscarRegistro.getCliente(14);
 
-                ListView<String> lvList = new ListView<String>();
-                ObservableList<String> items = buscarRegistro.ViewClientes();
+                if (nombre.trim().length() > 0) {
+                    OperacionesClientes buscar = new OperacionesClientes(accesoBD.getConnection());
+                    ArrayList<Cliente> arrayList;
+                    arrayList = buscar.getClientes();
+                    TableView tab = new TableView();
+                    TableColumn idNombre = new TableColumn("clienteId");
+                    idNombre.setCellValueFactory(new PropertyValueFactory<Cliente,String>("clienteId"));
+                    TableColumn colNombre = new TableColumn("Nombre");
+                    colNombre.setCellValueFactory(new PropertyValueFactory<Cliente,String>("Nombre"));
+                    TableColumn colApellido = new TableColumn ("apellidos");
+                    colApellido.setCellValueFactory(new PropertyValueFactory<Cliente, String>("apellidos"));
+                    TableColumn colDireccion = new TableColumn ("Direccion");
+                    colDireccion.setCellValueFactory(new PropertyValueFactory<Cliente,String>("direccion"));
 
-                lvList.setItems(items);
-                lvList.setMaxHeight(Control.USE_PREF_SIZE);
-                gp.add(lvList,5,9);
+                    tab.getColumns().addAll(idNombre,colNombre,colApellido,colDireccion);
+
+
+                    ObservableList<Cliente> list = FXCollections.observableArrayList();
+                    list.removeAll();
+                    list.addAll(arrayList);
+                    tab.setItems(list);
+                    gp.add(tab,1,4,4,4);
+
+                    tab.getSelectionModel().selectedItemProperty().addListener(
+                            new ChangeListener<Cliente>(){
+                                @Override
+                                public void changed(ObservableValue<? extends Cliente> observableValue, Cliente s, Cliente t1) {
+                                    campoID.setText(String.valueOf(t1.getClienteId()));
+                                    campoNombre.setText(String.valueOf(t1.getNombre()));
+                                    campoApellido.setText(String.valueOf(t1.getApellidos()));
+                                    campoDireccion.setText(String.valueOf(t1.getDireccion()));
+
+                                }
+                            });
+
+
+                   /* buscar.getCliente(var);
+                    Cliente regCliente = buscar.getCliente(var);
+                    mostar2.setText(regCliente.getApellidos());
+                    mostar3.setText(regCliente.getDireccion());
+                    mostar4.setText(String.valueOf(regCliente.getClienteId()));*/
+                    alert.setTitle("Busqueda");
+                    alert.setHeaderText("Busqueda Exitosa!!");
+                    alert.showAndWait();
+
+
+                }
+                else {
+                    alert.setTitle("Busqueda");
+                    alert.setHeaderText("Busqueda Fallida!!");
+                    alert.showAndWait();
+                }
 
             }
         });
@@ -311,8 +363,7 @@ public class Main extends Application {
                     alert.showAndWait();
                 }
                 else {
-                    alert.setHeaderText("ERROR");
-                    alert.setContentText("No se pudo actualizar");
+                    alert.setHeaderText("ERROR: No se pudo actualizar");
                     alert.showAndWait();
 
                 }
