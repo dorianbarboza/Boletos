@@ -22,11 +22,17 @@ import componentesPersonalizados.BotonPersonalizado;
 
 import static java.awt.Color.BLACK;
 
+// TABLE VIEW
+import javafx.scene.control.TableView;
+
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+
+
 
         BorderPane ventanaPrincipal = new BorderPane();
         primaryStage.setTitle("Ventana principal");
@@ -85,9 +91,22 @@ public class Main extends Application {
         gp.setPadding(new Insets(0,10,0,10));
         gp.setStyle("-fx-background-color:POWDERBLUE");
 
+
+        // Table view
+
+        TableView table = new TableView();
+        table.setEditable(true);
+        TableColumn clienteID = new TableColumn("ID");
+        TableColumn nombre = new TableColumn("Nombre");
+        TableColumn apellidos = new TableColumn("Apellidos");
+        TableColumn direccion = new TableColumn("Direccion");
+        table.getColumns().addAll(clienteID, nombre, apellidos, direccion);
+        //table.setPrefSize(1000,1000);
+        gp.add(table,1,5);
+
         /*
-        *  TABLA CLIENTE
-        * */
+         *  TABLA CLIENTE
+         * */
 
         Label txtTablaCliente = new Label ("Tabla Cliente");
         gp.add(txtTablaCliente,3,1);
@@ -120,7 +139,7 @@ public class Main extends Application {
         // Insertar
         //BotonPersonalizado insert = new BotonPersonalizado("Nuevo");
         Button insert = new Button("Nuevo");
-        insert.setPrefSize(70,1);
+        insert.setPrefSize(100,1);
         gp.add(insert,1,4);
 
 
@@ -128,27 +147,27 @@ public class Main extends Application {
         // Eliminar
         //BotonPersonalizado delete = new BotonPersonalizado("Eliminar");
         Button delete = new Button("Eliminar");
-        delete.setPrefSize(70,4);
+        delete.setPrefSize(100,4);
         gp.add(delete,2,4);
 
         // Buscar
         //BotonPersonalizado search = new BotonPersonalizado("Buscar");
         Button search = new Button("Buscar");
-        search.setPrefSize(70,1);
+        search.setPrefSize(100,1);
         gp.add(search,3,4);
 
         // Actualizar
         //BotonPersonalizado update = new BotonPersonalizado("Actualizar");
         Button update = new Button("Actualizar");
-        update.setPrefSize(70,1);
+        update.setPrefSize(100,1);
         gp.add(update,4,4);
 
 
 
 
         /*
-        * Boton Insertar
-        * */
+         * Boton Insertar
+         * */
         insert.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 
             @Override
@@ -160,13 +179,29 @@ public class Main extends Application {
                 System.out.println(nombre);
                 System.out.println(apellido);
                 System.out.println(direccion);
+/*
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Aviso");
+                alert.setHeaderText("Insertar");
+*/
+
+
+              //  alert.showAndWait();
 
 
                 DBManager accesoBD = null;
                 try {
                     accesoBD = new DBManager();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Aviso");
+                    alert.setContentText("Dato insertado");
+                    alert.showAndWait();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Aviso");
+                    alert.setContentText("Error");
+                    alert.showAndWait();
                 }
 
                 OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
@@ -192,8 +227,16 @@ public class Main extends Application {
                 DBManager accesoBD = null;
                 try {
                     accesoBD = new DBManager();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Aviso");
+                    alert.setContentText("Eliminado");
+                    alert.showAndWait();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Aviso");
+                    alert.setContentText("No eliminado");
+                    alert.showAndWait();
                 }
 
                 OperacionesClientes opCliente = new OperacionesClientes(accesoBD.getConnection());
@@ -265,7 +308,7 @@ public class Main extends Application {
         /*
          *  TABLA SECCION
          * */
-
+        /*
         Label txtTablaSeccion = new Label ("Tabla Seccion");
         gp.add(txtTablaSeccion,3,5);
 
@@ -309,15 +352,20 @@ public class Main extends Application {
         updateSeccion.setPrefSize(70,1);
         gp.add(updateSeccion,4,8);
 
+        */
+
+
+
+
+        //  Boton InsertarSeccion
+
         /*
-         * Boton InsertarSeccion
-         * */
         insertSeccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
 
-                /*
+
                 System.out.println("Boton presionado INSERTAR SECCION");
                 String descripcion = campoDescripcion.getText().toString();
                 int precio = Integer.parseInt(campoPrecio.getText());
@@ -335,15 +383,15 @@ public class Main extends Application {
                 opCliente.insertSeccion(descripcion, precio);
 
 
-                 */
+
 
 
             }
         });
 
-        /*
-         * Boton EliminarSeccion
-         * */
+
+        //  Boton EliminarSeccion
+
         deleteSeccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 
             @Override
@@ -353,9 +401,9 @@ public class Main extends Application {
             }
         });
 
-        /*
-         * Boton BuscarSeccion
-         * */
+
+         // Boton BuscarSeccion
+
         searchSeccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 
             @Override
@@ -365,9 +413,9 @@ public class Main extends Application {
             }
         });
 
-        /*
-         * Boton ActualizarSeccion
-         * */
+
+          //  Boton ActualizarSeccion
+
         updateSeccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 
             @Override
@@ -376,6 +424,9 @@ public class Main extends Application {
 
             }
         });
+
+        */
+
 
 
         return gp;
