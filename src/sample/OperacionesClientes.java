@@ -75,6 +75,8 @@ public class OperacionesClientes {
             return new Cliente(clienteId, nombre, apellidos, direccion);
         }
         catch (java.sql.SQLException ex){
+
+
             ex.printStackTrace();
             System.out.println("SQLException:␣" + ex.getMessage());
             System.out.println("SQLState:␣" + ex.getSQLState());
@@ -89,8 +91,6 @@ public class OperacionesClientes {
      */
 
     public int deleteCliente(int id){
-        int clienteId;
-        String nombre, apellidos, direccion;
 
         String query = "delete from cliente where clienteID = " + id;
 
@@ -120,8 +120,7 @@ public class OperacionesClientes {
         String query = "insert into cliente(nombre, apellidos, direccion) " +
                 "values ('" + nombre + "', '" + apellidos + "', '" + direccion + "')";
 
-      /*  insert into cliente(nombre, apellidos, direccion
-                values ('Jorge', 'Estrada', 'Lázaro Cárdenas 123')  */
+
 
         int numRegs = 0;
         try {

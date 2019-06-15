@@ -1,8 +1,6 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +37,7 @@ public class Main extends Application {
         ventanaPrincipal.setCenter(Body);
         ventanaPrincipal.setBottom(Footer);
 
-        primaryStage.setScene(new Scene(ventanaPrincipal, 1000, 1000));
+        primaryStage.setScene(new Scene(ventanaPrincipal, 800, 800));
         primaryStage.show();
     }
 
@@ -97,7 +95,7 @@ public class Main extends Application {
         //BotonPersonalizado insert = new BotonPersonalizado("Nuevo");
         Button insert = new Button("Nuevo");
         insert.setPrefSize(100,1);
-        gp.add(insert,1,4);
+        gp.add(insert,2,4);
 
 
 
